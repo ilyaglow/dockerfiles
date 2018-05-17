@@ -16,6 +16,17 @@ Usage example:
 docker run -it --rm -v /path/to/wordlists:/wordlists ilyaglow/wfuzz -c -w /wordlists/list.txt --hc=404 https://url/FUZZ
 ```
 
+### WhatWeb
+
+Link: https://github.com/urbanadventurer/WhatWeb
+
+Image: `ilyaglow/whatweb`
+
+Usage example:
+```
+docker run -it --rm ilyaglow/whatweb -v https://github.com
+```
+
 ## Misc
 
 ### jq
