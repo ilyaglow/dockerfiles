@@ -39,3 +39,14 @@ Usage example:
 ```
 < some.json docker run -i rm ilyaglow/jq -r '.field'
 ```
+
+### Squid
+
+Link: https://github.com/squid-cache/squid
+
+Image: `ilyaglow/squid`
+
+Usage example:
+```
+docker run -d -v your-squid.conf:/etc/squid/squid.conf -p 3128:3128 ilyaglow/squid
+```
