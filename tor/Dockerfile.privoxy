@@ -1,0 +1,10 @@
+FROM alpine:edge
+LABEL maintainer "Ilya Glotov <ilya@ilyaglotov.com>"
+
+RUN apk --no-cache --update add privoxy \
+  && echo "forward-socks5 / tor:9050 ." >> /etc/privoxy/config \
+  && sed -i 's/listen-address\s*127.0.0.1:8118/listen-address 0.0.0.0:8118/g' /etc/privoxy/config
+
+EXPOSE 8118
+
+ENTRYPOINT ["privoxy", "--user", "privoxy", "--no-daemon", "/etc/privoxy/config"]

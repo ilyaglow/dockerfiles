@@ -1,0 +1,18 @@
+version: "2"
+services:
+  tor:
+    build:
+      context: .
+      dockerfile: Dockerfile.tor
+    ports:
+      - "127.0.0.1:9050:9050"
+
+  privoxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.privoxy
+    ports:
+      - "127.0.0.1:8118:8118"
+    depends_on:
+      - tor
+
