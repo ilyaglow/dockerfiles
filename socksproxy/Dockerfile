@@ -3,7 +3,7 @@ LABEL maintainer "Ilya Glotov <ilya@ilyaglotov.com>"
 
 ENV CGO_ENABLED=0
 
-COPY socksproxy/main.go /go/src/socksproxy/main.go
+COPY main.go /go/src/socksproxy/main.go
 
 RUN apk --update --no-cache add git ca-certificates \
   && go get github.com/armon/go-socks5 \
