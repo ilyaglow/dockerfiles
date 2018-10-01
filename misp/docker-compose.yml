@@ -1,0 +1,88 @@
+version: "2"
+services:
+  misp:
+    build:
+      dockerfile: Dockerfile
+      context: ./misp
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - 80:80
+    environment:
+      MISP_BASEURL: https://misp
+      MISP_MODULES_URL: http://modules
+      MISP_ADMIN_EMAIL: admin@misp
+      MISP_ADMIN_PASSPHRASE: passphrase
+      MISP_INIT: "true"
+      MYSQL_HOST: mariadb
+      MYSQL_MISP_USER: misp
+      MYSQL_MISP_PASSWORD: misp
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: redis
+      REDIS_DATABASE: 1
+      REDIS_NAMESPACE: mispq
+      REDIS_ZMQ_DATABASE: 1
+      REDIS_ZMQ_NAMESPACE: mispq
+      POSTFIX_HOST: postfix
+      TIMEZONE: Europe/Moscow
+      GPG_HOME: /var/www/MISP/.gnupg
+      GPG_PASSPHRASE: misp-sample
+      GPG_EMAIL: misp@misp
+    volumes:
+      - ./misp/database.php:/var/www/MISP/app/Config/database.php:ro
+      - ./misp/email.php:/var/www/MISP/app/Config/email.php:ro
+      - ./misp/resque-config.php:/var/www/MISP/app/Plugin/CakeResque/Config/config.php
+      - ./misp/.gnupg:/var/www/MISP/.gnupg
+      - ./misp/gpg.asc:/var/www/MISP/app/webroot/gpg.asc
+      - ./misp/entrypoint.sh:/init-scripts/entrypoint.sh
+    command:
+      - /init-scripts/entrypoint.sh
+
+  mariadb:
+    build:
+      dockerfile: Dockerfile
+      context: ./mysql
+    restart: always
+    environment:
+      MYSQL_USER: misp
+      MYSQL_PASSWORD: misp
+      MYSQL_DATABASE: misp
+      MYSQL_ROOT_PASSWORD: "rootpass"
+    volumes:
+    - ./misp-db:/var/lib/mysql
+
+  redis:
+    image: redis:3.2-alpine
+    restart: always
+
+  modules:
+    build:
+      dockerfile: Dockerfile
+      context: ./misp-modules
+    environment:
+      - REDIS_HOST=redis
+    restart: always
+
+ # worker:
+ #   build:
+ #     dockerfile: Dockerfile
+ #     context: ./misp
+ #   # restart: always
+ #   user: www-data
+ #   entrypoint: /var/www/MISP/app/Console/worker/start.sh
+ #   environment:
+ #     - REDIS_HOST=redis
+ #     - REDIS_PORT=6379
+ #     - REDIS_DATABASE=1
+ #     - REDIS_NAMESPACE=mispq
+ #   volumes:
+ #     - ./misp/database.php:/var/www/MISP/app/Config/database.php:ro
+ #     - ./misp/email.php:/var/www/MISP/app/Config/email.php:ro
+ #     - ./misp/resque-config.php:/var/www/MISP/app/Plugin/CakeResque/Config/config.php
+
+ # postfix:
+ #   image: juanluisbaptiste/postfix:latest
+ #   environment:
+ #     - SMTP_SERVER=smtp.google.com
