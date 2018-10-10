@@ -4,16 +4,15 @@ LABEL maintainer "Ilya Glotov <ilya@ilyaglotov.com>"
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG en_US.UTF-8
 ENV MISP_VERSION 2.4.95
-ENV DEPS git \
-         unzip
 
 RUN apt-get update \
-  && apt-get install -y libedit-dev \
+  && apt-get install -y git \
+                        libedit-dev \
                         libxml2-dev \
                         python3 \
                         python3-pip \
                         sudo \
-                        $DEPS \
+                        unzip \
                         \
   && pip3 install zmq \
                   redis \
@@ -56,6 +55,6 @@ RUN apt-get update \
   && mv config.default.php config.php \
   && mv core.default.php core.php \
   \
-  && apt-get purge -y $DEPS
+  && rm -rf /var/lib/apt/lists/*
 
-COPY php.ini /etc/local/etc/php/php.ini
+COPY php.ini /usr/local/etc/php/php.ini
