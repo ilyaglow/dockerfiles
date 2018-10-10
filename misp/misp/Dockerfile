@@ -1,9 +1,10 @@
 FROM php:7.2-apache
 LABEL maintainer "Ilya Glotov <ilya@ilyaglotov.com>"
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV LANG en_US.UTF-8
-ENV MISP_VERSION 2.4.95
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=en_US.UTF-8 \
+    MISP_VERSION=2.4.96 \
+    DEPS=libfuzzy-dev
 
 RUN apt-get update \
   && apt-get install -y git \
@@ -13,9 +14,14 @@ RUN apt-get update \
                         python3-pip \
                         sudo \
                         unzip \
+                        $DEPS \
                         \
   && pip3 install zmq \
                   redis \
+                  pymisp \
+                  git+https://github.com/kbandla/pydeep.git \
+                  python-magic \
+                  lief \
                   \
   && pecl install cli \
                   redis \
@@ -55,6 +61,7 @@ RUN apt-get update \
   && mv config.default.php config.php \
   && mv core.default.php core.php \
   \
+  && apt-get purge -y $DEPS \
   && rm -rf /var/lib/apt/lists/*
 
 COPY php.ini /usr/local/etc/php/php.ini
