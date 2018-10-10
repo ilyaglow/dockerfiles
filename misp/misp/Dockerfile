@@ -10,9 +10,14 @@ ENV DEPS git \
 RUN apt-get update \
   && apt-get install -y libedit-dev \
                         libxml2-dev \
+                        python3 \
+                        python3-pip \
                         sudo \
                         $DEPS \
                         \
+  && pip3 install zmq \
+                  redis \
+                  \
   && pecl install cli \
                   redis \
                   \
