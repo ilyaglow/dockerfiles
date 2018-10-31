@@ -3,7 +3,7 @@ class DATABASE_CONFIG {
 	public $default = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
-		'host' => 'mariadb',
+		'host' => 'mysql',
 		'login' => 'misp',
 		'port' => 3306,
 		'password' => 'misp',

@@ -6,21 +6,20 @@ services:
       context: ./misp
     restart: always
     depends_on:
-      - mariadb
+      - mysql
     ports:
       - 80:80
     environment:
-      MISP_BASEURL: https://misp
+      MISP_BASEURL: http://localhost
       MISP_MODULES_URL: http://modules
       MISP_ADMIN_EMAIL: admin@misp
       MISP_ADMIN_PASSPHRASE: passphrase
       MISP_INIT: "true"
-      MYSQL_HOST: mariadb
+      MYSQL_HOST: mysql
       MYSQL_MISP_USER: misp
       MYSQL_MISP_PASSWORD: misp
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      REDIS_PASSWORD: redis
       REDIS_DATABASE: 1
       REDIS_NAMESPACE: mispq
       REDIS_ZMQ_DATABASE: 1
@@ -40,10 +39,8 @@ services:
     command:
       - /init-scripts/entrypoint.sh
 
-  mariadb:
-    build:
-      dockerfile: Dockerfile
-      context: ./mysql
+  mysql:
+    build: mysql/
     restart: always
     environment:
       MYSQL_USER: misp
@@ -65,6 +62,11 @@ services:
       - REDIS_HOST=redis
     restart: always
 
+  cron:
+    build: cron/
+    environment:
+      - MISP_AUTH=MISP_AUTH_KEY
+    restart: always
  # worker:
  #   build:
  #     dockerfile: Dockerfile

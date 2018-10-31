@@ -217,7 +217,7 @@ if [ $GPG_PASSPHRASE ]; then
     $CAKE Admin setSetting "GnuPG.password" "$GPG_PASSPHRASE"
 fi
 
-if [ $MISP_INIT = "true" ]; then
+if [ $MISP_INIT == "true" ]; then
     # Update the galaxies…
     $CAKE Admin updateGalaxies
 
