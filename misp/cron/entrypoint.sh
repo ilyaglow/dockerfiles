@@ -2,7 +2,7 @@
 FETCH_ROUTE=/feeds/fetchFromAllFeeds
 DEFAULT_MISP_URL=http://misp
 # Update once an hour
-DEFAULT_CRON_TIME="* 1 * * *"
+DEFAULT_CRON_TIME="* */1 * * *"
 
 if [ ! "$MISP_URL" ]; then
     MISP_URL=$DEFAULT_MISP_URL
