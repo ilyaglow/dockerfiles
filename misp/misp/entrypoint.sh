@@ -2,7 +2,7 @@
 
 PATH_TO_MISP='/var/www/MISP'
 CAKE="sudo -u www-data $PATH_TO_MISP/app/Console/cake"
-MISP_BASEURL=''
+DEFAULT_MISP_BASEURL='http://localhost'
 MISP_LIVE='1'
 
 # Webserver configuration
@@ -211,6 +211,12 @@ fi
 
 if [ $GPG_EMAIL ]; then
     $CAKE Admin setSetting "GnuPG.email" "$GPG_EMAIL"
+fi
+
+if [ ! $MISP_BASEURL ]; then
+    $CAKE Admin setSetting "MISP.baseurl" "$DEFAULT_MISP_BASEURL"
+else
+    $CAKE Admin setSetting "MISP.baseurl" "$MISP_BASEURL"
 fi
 
 if [ $GPG_PASSPHRASE ]; then

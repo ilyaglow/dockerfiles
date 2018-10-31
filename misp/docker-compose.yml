@@ -65,7 +65,7 @@ services:
   cron:
     build: cron/
     environment:
-      - MISP_AUTH=MISP_AUTH_KEY
+      - MISP_AUTH=TlS78bhb9XK3TvfZSYAB0kxejtpkMcuA4MxVccuC
     restart: always
  # worker:
  #   build:
