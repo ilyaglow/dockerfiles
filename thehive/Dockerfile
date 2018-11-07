@@ -1,5 +1,6 @@
 FROM openjdk:8 as build-env
-LABEL maintainer "Ilya Glotov <contact@ilyaglotov.com>"
+LABEL maintainer="Ilya Glotov <contact@ilyaglotov.com>" \
+      repository="https://github.com/TheHive-Project/TheHive"
 
 ENV THEHIVE_VERSION 3.1.2
 
