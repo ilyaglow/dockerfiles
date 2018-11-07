@@ -14,6 +14,7 @@ RUN apt-get update \
   && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
   && apt-get install -y nodejs \
                         git \
+                        libpng-dev \
                         sudo \
                         \
   && npm install -g grunt-cli \
@@ -32,6 +33,7 @@ RUN apt-get update \
   && apt-get purge -y git \
                       sbt \
                       nodejs \
+                      libpng-dev \
   && rm -rf /TheHive \
   && rm -rf /root/* \
   && rm -rf /var/lib/apt/lists/*
@@ -40,9 +42,9 @@ FROM openjdk:8
 COPY --from=build-env /opt/thehive /opt/thehive
 COPY --from=build-env /var/log/thehive /var/log/thehive
 
-RUN useradd thehive
-
-VOLUME /opt/thehive/conf/application.conf
+RUN useradd thehive \
+  && chown -R thehive /opt/thehive \
+                      /var/log/thehive
 
 USER thehive
 
