@@ -44,8 +44,14 @@ COPY --from=build-env /var/log/thehive /var/log/thehive
 
 RUN useradd thehive \
   && chown -R thehive /opt/thehive \
-                      /var/log/thehive
+                      /var/log/thehive \
+  && echo -e 'search.host = ["elastic:9300"]\n\
+cortex.url = ${?CORTEX_URL}\n\
+cortex.key = ${?CORTEX_KEY}\n\
+play.http.secret.key = ${?PLAY_SECRET}' >> /opt/thehive/conf/application.conf
 
 USER thehive
+
+EXPOSE 9000
 
 ENTRYPOINT ["/opt/thehive/bin/thehive"]
