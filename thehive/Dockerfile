@@ -35,7 +35,6 @@ RUN apt-get update \
 
 FROM openjdk:8
 COPY --from=build-env /opt/thehive /opt/thehive
-COPY --from=build-env /var/log/thehive /var/log/thehive
 
 RUN useradd thehive \
   && mkdir /var/log/thehive \
@@ -43,8 +42,6 @@ RUN useradd thehive \
                       /var/log/thehive \
   && echo "play.http.secret.key=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 49)" >> /opt/thehive/conf/application.conf \
   && echo -e 'search.host = ["elastic:9300"]\n\
-cortex.url = ${?CORTEX_URL}\n\
-cortex.key = ${?CORTEX_KEY}\n\
 play.http.secret.key = ${?PLAY_SECRET}' >> /opt/thehive/conf/application.conf
 
 USER thehive
