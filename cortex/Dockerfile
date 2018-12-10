@@ -69,10 +69,34 @@ RUN apt-get update \
   && pip2 install -r /tmp/requirements.txt \
   && pip3 install -r /tmp/requirements.txt
 
+FROM alpine:latest as git
+RUN apk --update --no-cache add git
+
+FROM git as mispWarningLists
+RUN git clone --branch=master \
+              --depth=1 \
+              https://github.com/MISP/misp-warninglists.git \
+              /opt/misp-warninglists
+
+FROM git as yaraRules
+RUN git clone --branch=master \
+              --depth=1 \
+              https://github.com/Yara-Rules/rules.git \
+              /opt/yara-rules
+
+FROM alpine:latest as virusShare
+RUN apk --update --no-cache add curl \
+  && mkdir -p /opt/virusshare \
+  && cd /opt/virusshare \
+  && curl -Lo unpacked_hashes.md5 https://virusshare.com/hashes/unpacked_hashes.md5
+
 FROM openjdk:8 as final
 COPY --from=builder /opt/cortex /opt/cortex
 COPY --from=analyzers /opt/Cortex-Analyzers /opt/Cortex-Analyzers
 COPY --from=analyzers /usr/local/lib/python* /usr/local/lib/
+COPY --from=mispWarningLists /opt/misp-warninglists /opt/misp-warninglists
+COPY --from=yaraRules /opt/yara-rules /opt/yara-rules
+COPY --from=virusShare /opt/virusshare /opt/virusshare
 
 RUN apt-get update \
   && apt-get install -y python2.7-dev \
