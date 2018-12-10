@@ -36,7 +36,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && rm -rf /root/*
 
-FROM python:2 as analyzers
+FROM debian:stretch as analyzers
 
 ENV CORTEX_ANALYZERS_VERSION=1.14.4 \
     CORTEX_ANALYZERS_REPOSITORY=https://github.com/TheHive-Project/Cortex-Analyzers.git \
@@ -48,6 +48,7 @@ COPY requirements.txt /tmp/requirements.txt
 RUN apt-get update \
   && apt-get install -y $DEPS \
                         python2.7-dev \
+                        python-pip \
                         python3-pip \
                         python3-dev \
                         ssdeep \
@@ -88,9 +89,10 @@ RUN apt-get update \
   && chown -R cortex /opt/cortex \
                       /opt/Cortex-Analyzers \
                       /var/log/cortex \
-  && echo "play.http.secret.key=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 49)" >> /opt/cortex/conf/application.conf \
-  && echo -e 'search.host = ["elasticsearch:9300"]\n\
-analyzer.path = ["/opt/Cortex-Analyzers"]\n\
+  && echo "play.http.secret.key = $(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 49)" >> /opt/cortex/conf/application.conf \
+  && echo 'search.host = ["elasticsearch:9300"]\n\
+analyzer.path = ["/opt/Cortex-Analyzers/analyzers"]\n\
+responder.path = ["/opt/Cortex-Analyzers/responders"]\n\
 play.http.secret.key = ${?PLAY_SECRET}' >> /opt/cortex/conf/application.conf
 
 VOLUME /opt/Cortex-Analyzers
