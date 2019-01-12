@@ -2,7 +2,8 @@ FROM openjdk:8 as build-env
 LABEL maintainer="Ilya Glotov <contact@ilyaglotov.com>" \
       repository="https://github.com/TheHive-Project/TheHive"
 
-ENV THEHIVE_VERSION=3.1.2 \
+ENV THEHIVE_VERSION=3.2.1 \
+    APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 \
     BUILD_DEPS="sbt \
                 nodejs \
                 git \
@@ -41,7 +42,7 @@ RUN useradd thehive \
   && chown -R thehive /opt/thehive \
                       /var/log/thehive \
   && echo "play.http.secret.key=$(tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 49)" >> /opt/thehive/conf/application.conf \
-  && echo -e 'search.host = ["elastic:9300"]\n\
+  && echo -e 'search.host = ["elasticsearch:9300"]\n\
 play.http.secret.key = ${?PLAY_SECRET}' >> /opt/thehive/conf/application.conf
 
 USER thehive
