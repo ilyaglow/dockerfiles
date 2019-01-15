@@ -2,7 +2,7 @@ FROM openjdk:8 as builder
 LABEL maintainer="Ilya Glotov <contact@ilyaglotov.com>" \
       repository="https://github.com/TheHive-Project/Cortex"
 
-ENV CORTEX_VERSION=2.1.2 \
+ENV CORTEX_VERSION=2.1.3 \
     BUILD_DEPS="git \
                 nodejs \
                 sbt \
