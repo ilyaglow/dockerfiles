@@ -93,7 +93,7 @@ RUN apk --update --no-cache add curl \
 FROM openjdk:8 as final
 COPY --from=builder /opt/cortex /opt/cortex
 COPY --from=analyzers /opt/Cortex-Analyzers /opt/Cortex-Analyzers
-COPY --from=analyzers /usr/local/lib/python* /usr/local/lib/
+COPY --from=analyzers /usr/local/lib /usr/local/lib
 COPY --from=mispWarningLists /opt/misp-warninglists /opt/misp-warninglists
 COPY --from=yaraRules /opt/yara-rules /opt/yara-rules
 COPY --from=virusShare /opt/virusshare /opt/virusshare
