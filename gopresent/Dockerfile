@@ -1,5 +1,5 @@
 FROM golang:alpine
-LABEL mantainer "Ilya Glotov <i@bi.zone>"
+LABEL mantainer "Ilya Glotov <ilya@ilyaglotov.com>"
 
 ENV CGO_ENABLED=0
 
