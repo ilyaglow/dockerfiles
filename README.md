@@ -1,7 +1,9 @@
 About
 -----
 
-Dockerized apps I use
+Dockerized apps I use. This readme is updated occasionally, so better look at the name of the folders in the repository.
+
+Also checkout the [securuity-dockerfiles](https://github.com/security-dockerfiles) organization where I try to consolidate all new dockerfiles I use.
 
 ## Penetration testing
 
