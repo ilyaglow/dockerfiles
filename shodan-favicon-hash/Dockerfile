@@ -3,7 +3,8 @@ LABEL maintainer "Ilya Glotov <ilya@ilyaglotov.com>"
 
 RUN python3 -m ensurepip \
   && pip install pymmh3 \
-                 requests
+                 requests \
+                 shodan
 
 COPY script.py /script.py
 
